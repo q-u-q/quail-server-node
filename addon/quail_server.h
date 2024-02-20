@@ -1,6 +1,8 @@
 #ifndef ADDON_QUAIL_SERVER_H_
 #define ADDON_QUAIL_SERVER_H_
 
+#include "api/quail_server.h"
+
 #include <napi.h>
 
 namespace addon {
@@ -12,6 +14,8 @@ public:
   QuailServer(const Napi::CallbackInfo &info);
 
   Napi::Value Start(const Napi::CallbackInfo &info);
+
+  quail::QuailServer server;
 };
 
 } // namespace addon
