@@ -5,8 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "compile": "cmake-js compile -D"
-
+    "compile": "cmake-js compile -D -p 16"
   },
   "keywords": [],
   "author": "",
