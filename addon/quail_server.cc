@@ -31,7 +31,7 @@ Napi::Value QuailServer::Start(const Napi::CallbackInfo &info) {
     std::string cert = info[0].ToString().Utf8Value();
     std::string key = info[1].ToString().Utf8Value();
 
-    server.signal_transport_.connect([](quit::QuitTransport* t) {
+    server.signal_transport_.connect([](quit::QuailTransport* t) {
       std::cout << "Transport" << std::endl;
       // std::string data("foo");
       // sleep(1);
