@@ -4,11 +4,10 @@
 #include "quail_server.h"
 #include "quail_transport.h"
 
-Napi::Value initEnv(const Napi::CallbackInfo& info) {
+Napi::Value initEnv(const Napi::CallbackInfo &info) {
 
   int level = info[0].ToNumber();
   // SetEnv(level);
-
 
   return info.Env().Undefined();
 }

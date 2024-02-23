@@ -8,11 +8,8 @@
 
 namespace addon {
 
-
-
 class QuailServer : public Napi::ObjectWrap<QuailServer> {
 public:
-
   struct callback_data {
     quit::QuailTransport *transport;
   };
