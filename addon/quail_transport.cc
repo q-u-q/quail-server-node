@@ -12,12 +12,12 @@ QuailTransport::QuailTransport(const Napi::CallbackInfo &info)
 }
 
 void QuailTransport::Init(Napi::Env env, Napi::Object exports) {
-  Napi::Function func =
-      DefineClass(env, "QuailTransport",
-                  {
-                      InstanceMethod("SetCallback", &QuailTransport::SetCallback),
-                      InstanceMethod("Send", &QuailTransport::Send),
-                  });
+  Napi::Function func = DefineClass(
+      env, "QuailTransport",
+      {
+          InstanceMethod("SetCallback", &QuailTransport::SetCallback),
+          InstanceMethod("Send", &QuailTransport::Send),
+      });
 
   Napi::FunctionReference *constructor = new Napi::FunctionReference();
   *constructor = Napi::Persistent(func);
@@ -25,7 +25,6 @@ void QuailTransport::Init(Napi::Env env, Napi::Object exports) {
 
   exports.Set("QuailTransport", func);
 }
-
 
 Napi::Object QuailTransport::NewInstance(Napi::Env env, Napi::Value arg,
                                          quit::QuailTransport *transport) {
@@ -62,12 +61,12 @@ Napi::Value QuailTransport::SetCallback(const Napi::CallbackInfo &info) {
           // t->Send(stream_id, response);
           // transport_->Send(stream_id, response);
           auto callback_wrapper = [](Napi::Env env, Napi::Function jsCallback,
-                                callback_data *data) {
+                                     callback_data *data) {
             std::cout << "foo\n";
             auto stream_id = Napi::Number::New(env, data->stream_id);
             auto message = Napi::String::New(env, data->message);
-            
-            jsCallback.Call({stream_id,message});
+
+            jsCallback.Call({stream_id, message});
 
             delete data;
           };
@@ -76,8 +75,7 @@ Napi::Value QuailTransport::SetCallback(const Napi::CallbackInfo &info) {
           data->stream_id = stream_id;
           data->message = message;
           this->async_callback_safe_.BlockingCall(data, callback_wrapper);
-
-    });
+        });
 
   } else {
   }
@@ -87,11 +85,11 @@ Napi::Value QuailTransport::SetCallback(const Napi::CallbackInfo &info) {
 
 Napi::Value QuailTransport::Send(const Napi::CallbackInfo &info) {
 
-if (info.Length() == 2) {
+  if (info.Length() == 2) {
     std::cout << "QuailTransport::Send\n";
 
-   uint32_t stream_id = info[0].ToNumber().Uint32Value();
-   std::string data = info[1].ToString().Utf8Value();
+    uint32_t stream_id = info[0].ToNumber().Uint32Value();
+    std::string data = info[1].ToString().Utf8Value();
 
     transport_->Send(stream_id, data);
   } else {
@@ -99,6 +97,5 @@ if (info.Length() == 2) {
 
   return info.Env().Undefined();
 }
-
 
 } // namespace addon
