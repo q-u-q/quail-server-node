@@ -16,6 +16,7 @@ void QuailTransport::Init(Napi::Env env, Napi::Object exports) {
       DefineClass(env, "QuailTransport",
                   {
                       InstanceMethod("SetCallback", &QuailTransport::SetCallback),
+                      InstanceMethod("Send", &QuailTransport::Send),
                   });
 
   Napi::FunctionReference *constructor = new Napi::FunctionReference();
@@ -59,7 +60,23 @@ Napi::Value QuailTransport::SetCallback(const Napi::CallbackInfo &info) {
                     << std::endl;
           std::string response = "Dont give a shit";
           // t->Send(stream_id, response);
-          transport_->Send(stream_id, response);
+          // transport_->Send(stream_id, response);
+          auto callback_wrapper = [](Napi::Env env, Napi::Function jsCallback,
+                                callback_data *data) {
+            std::cout << "foo\n";
+            auto stream_id = Napi::Number::New(env, data->stream_id);
+            auto message = Napi::String::New(env, data->message);
+            
+            jsCallback.Call({stream_id,message});
+
+            delete data;
+          };
+
+          auto data = new callback_data();
+          data->stream_id = stream_id;
+          data->message = message;
+          this->async_callback_safe_.BlockingCall(data, callback_wrapper);
+
     });
 
   } else {
@@ -67,5 +84,21 @@ Napi::Value QuailTransport::SetCallback(const Napi::CallbackInfo &info) {
 
   return info.Env().Undefined();
 }
+
+Napi::Value QuailTransport::Send(const Napi::CallbackInfo &info) {
+
+if (info.Length() == 2) {
+    std::cout << "QuailTransport::Send\n";
+
+   uint32_t stream_id = info[0].ToNumber().Uint32Value();
+   std::string data = info[1].ToString().Utf8Value();
+
+    transport_->Send(stream_id, data);
+  } else {
+  }
+
+  return info.Env().Undefined();
+}
+
 
 } // namespace addon

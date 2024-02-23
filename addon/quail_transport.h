@@ -11,6 +11,8 @@ class QuailTransport : public Napi::ObjectWrap<QuailTransport> {
 public:
 
   struct callback_data {
+    uint32_t stream_id;
+    std::string message;
   };
 
   static void Init(Napi::Env env, Napi::Object exports);
@@ -19,6 +21,7 @@ public:
   QuailTransport(const Napi::CallbackInfo &info);
 
   Napi::Value SetCallback(const Napi::CallbackInfo &info);
+  Napi::Value Send(const Napi::CallbackInfo &info);
 
   Napi::ThreadSafeFunction async_callback_safe_ = nullptr;
 
