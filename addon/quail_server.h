@@ -8,13 +8,16 @@
 
 namespace addon {
 
-struct callback_data {
-  quit::QuailTransport *transport;
-};
+
 
 class QuailServer : public Napi::ObjectWrap<QuailServer> {
 public:
-  static void InitModule(Napi::Env env, Napi::Object exports);
+
+  struct callback_data {
+    quit::QuailTransport *transport;
+  };
+
+  static void Init(Napi::Env env, Napi::Object exports);
 
   QuailServer(const Napi::CallbackInfo &info);
 

@@ -4,7 +4,9 @@ const cert = "/root/quail-server/certificates/certificate.pem";
 const key = "/root/quail-server/certificates/certificate.key";
 
 const server = new QuailServer();
-server.SetCallback(function(){
-  console.log('foo!');
+server.SetCallback(function(transport){
+  transport.SetCallback(function(){
+
+  });
 });
 server.Start(cert, key);

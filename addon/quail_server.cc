@@ -9,7 +9,7 @@
 
 namespace addon {
 
-void QuailServer::InitModule(Napi::Env env, Napi::Object exports) {
+void QuailServer::Init(Napi::Env env, Napi::Object exports) {
   Napi::Function func =
       DefineClass(env, "QuailServer",
                   {
@@ -33,7 +33,7 @@ QuailServer::QuailServer(const Napi::CallbackInfo &info)
                          callback_data *data) {
     std::cout << "foo\n";
     auto arg = Napi::Number::New(env, 1);
-    auto transport = QuailTransport::NewInstance(env, arg);
+    auto transport = QuailTransport::NewInstance(env, arg, data->transport);
     jsCallback.Call({transport});
 
     delete data;
@@ -61,13 +61,13 @@ Napi::Value QuailServer::Start(const Napi::CallbackInfo &info) {
         data->transport = t;
         this->async_callback_safe_.BlockingCall(data, callback_wrapper_);
 
-        t->signal_message_.connect(
-            [t](uint32_t stream_id, std::string message) {
-              std::cout << "stream_id:" << stream_id << " message: " << message
-                        << std::endl;
-              std::string response = "Dont give a shit";
-              t->Send(stream_id, response);
-            });
+        // t->signal_message_.connect(
+        //     [t](uint32_t stream_id, std::string message) {
+        //       std::cout << "stream_id:" << stream_id << " message: " << message
+        //                 << std::endl;
+        //       std::string response = "Dont give a shit";
+        //       t->Send(stream_id, response);
+        //     });
       });
       server.Start(cert_copy, key_copy);
     });

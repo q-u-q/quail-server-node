@@ -2,6 +2,7 @@
 #include <napi.h>
 
 #include "quail_server.h"
+#include "quail_transport.h"
 
 Napi::Value initEnv(const Napi::CallbackInfo& info) {
 
@@ -16,7 +17,8 @@ Napi::Object InitAll(Napi::Env env, Napi::Object exports) {
   // exports.Set(Napi::String::New(env, "initEnv"),
   //             Napi::Function::New(env, initEnv));
 
-  addon::QuailServer::InitModule(env, exports);
+  addon::QuailServer::Init(env, exports);
+  addon::QuailTransport::Init(env, exports);
 
   return exports;
 }
