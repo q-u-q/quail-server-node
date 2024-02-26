@@ -8,7 +8,6 @@ namespace addon {
 
 QuailTransport::QuailTransport(const Napi::CallbackInfo &info)
     : Napi::ObjectWrap<QuailTransport>(info) {
-  std::cout << "foo Transport\n";
 }
 
 void QuailTransport::Init(Napi::Env env, Napi::Object exports) {
@@ -40,7 +39,6 @@ Napi::Object QuailTransport::NewInstance(Napi::Env env, Napi::Value arg,
 Napi::Value QuailTransport::SetCallback(const Napi::CallbackInfo &info) {
 
   if (info.Length() == 1) {
-    std::cout << "QuailTransport SetCallback\n";
 
     Napi::Function callback = info[0].As<Napi::Function>();
     this->async_callback_safe_ = Napi::ThreadSafeFunction::New(
@@ -62,7 +60,6 @@ Napi::Value QuailTransport::SetCallback(const Napi::CallbackInfo &info) {
           // transport_->Send(stream_id, response);
           auto callback_wrapper = [](Napi::Env env, Napi::Function jsCallback,
                                      callback_data *data) {
-            std::cout << "foo\n";
             auto stream_id = Napi::Number::New(env, data->stream_id);
             auto message = Napi::String::New(env, data->message);
 

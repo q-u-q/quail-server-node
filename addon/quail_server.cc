@@ -31,7 +31,6 @@ QuailServer::QuailServer(const Napi::CallbackInfo &info)
 
   callback_wrapper_ = [](Napi::Env env, Napi::Function jsCallback,
                          callback_data *data) {
-    std::cout << "foo\n";
     auto arg = Napi::Number::New(env, 1);
     auto transport = QuailTransport::NewInstance(env, arg, data->transport);
     jsCallback.Call({transport});
@@ -41,7 +40,6 @@ QuailServer::QuailServer(const Napi::CallbackInfo &info)
 }
 
 Napi::Value QuailServer::Start(const Napi::CallbackInfo &info) {
-  std::cout << "Start\n";
 
   if (info.Length() == 2) {
     std::string cert = info[0].ToString().Utf8Value();
@@ -52,7 +50,6 @@ Napi::Value QuailServer::Start(const Napi::CallbackInfo &info) {
       std::string key_copy = std::move(key);
 
       server.signal_transport_.connect([this](quit::QuailTransport *t) {
-        std::cout << "Transport" << std::endl;
         // std::string data("foo");
         // sleep(1);
         // t->session_->SendOrQueueDatagram(data);
@@ -82,7 +79,6 @@ Napi::Value QuailServer::Start(const Napi::CallbackInfo &info) {
 Napi::Value QuailServer::SetCallback(const Napi::CallbackInfo &info) {
 
   if (info.Length() == 1) {
-    std::cout << "SetCallback\n";
 
     Napi::Function callback = info[0].As<Napi::Function>();
     this->async_callback_safe_ = Napi::ThreadSafeFunction::New(

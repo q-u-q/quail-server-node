@@ -7,7 +7,7 @@ const server = new QuailServer();
 server.SetCallback(function(transport){
   transport.SetCallback(function(stream_id, message){
     console.log(`js get stream_id:${stream_id}, message:${message}`);
-    transport.Send(stream_id, message);
+    transport.Send(stream_id, "ojbk!");
   });
 });
 server.Start(cert, key);
