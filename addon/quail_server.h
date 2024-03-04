@@ -11,6 +11,7 @@ namespace addon {
 class QuailServer : public Napi::ObjectWrap<QuailServer> {
 public:
   struct callback_data {
+    std::string event;
     quail::QuailTransport *transport;
   };
 
@@ -21,6 +22,7 @@ public:
   Napi::Value Start(const Napi::CallbackInfo &info);
 
   Napi::Value SetCallback(const Napi::CallbackInfo &info);
+  Napi::Value On(const Napi::CallbackInfo &info);
 
   quail::QuailServer server;
 

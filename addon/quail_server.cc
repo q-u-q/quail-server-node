@@ -15,6 +15,7 @@ void QuailServer::Init(Napi::Env env, Napi::Object exports) {
                   {
                       InstanceMethod("Start", &QuailServer::Start),
                       InstanceMethod("SetCallback", &QuailServer::SetCallback),
+                      InstanceMethod("On", &QuailServer::On),
                   });
 
   Napi::FunctionReference *constructor = new Napi::FunctionReference();
@@ -33,7 +34,8 @@ QuailServer::QuailServer(const Napi::CallbackInfo &info)
                          callback_data *data) {
     auto arg = Napi::Number::New(env, 1);
     auto transport = QuailTransport::NewInstance(env, arg, data->transport);
-    jsCallback.Call({transport});
+    auto event = Napi::String::New(env, data->event);
+    jsCallback.Call({event, transport});
 
     delete data;
   };
@@ -49,24 +51,6 @@ Napi::Value QuailServer::Start(const Napi::CallbackInfo &info) {
       std::string cert_copy = std::move(cert);
       std::string key_copy = std::move(key);
 
-      server.On("/echo",[this](quail::QuailTransport *t) {
-        // std::string data("foo");
-        // sleep(1);
-        // t->session_->SendOrQueueDatagram(data);
-
-        auto data = new callback_data();
-        data->transport = t;
-        this->async_callback_safe_.BlockingCall(data, callback_wrapper_);
-
-        // t->signal_message_.connect(
-        //     [t](uint32_t stream_id, std::string message) {
-        //       std::cout << "stream_id:" << stream_id << " message: " <<
-        //       message
-        //                 << std::endl;
-        //       std::string response = "Dont give a shit";
-        //       t->Send(stream_id, response);
-        //     });
-      });
       server.Start(cert_copy, key_copy);
     });
 
@@ -90,6 +74,39 @@ Napi::Value QuailServer::SetCallback(const Napi::CallbackInfo &info) {
         [](Napi::Env) { // Finalizer used to clean threads up
           std::cout << "shit\n";
         });
+
+
+  } else {
+  }
+
+  return info.Env().Undefined();
+}
+
+Napi::Value QuailServer::On(const Napi::CallbackInfo &info) {
+
+  if (info.Length() == 1) {
+
+    auto event = info[0].As<Napi::String>().Utf8Value();
+
+    server.On(event, [this, event](quail::QuailTransport *t) {
+      // std::string data("foo");
+      // sleep(1);
+      // t->session_->SendOrQueueDatagram(data);
+
+      auto data = new callback_data();
+      data->event = event;
+      data->transport = t;
+      this->async_callback_safe_.BlockingCall(data, callback_wrapper_);
+
+      // t->signal_message_.connect(
+      //     [t](uint32_t stream_id, std::string message) {
+      //       std::cout << "stream_id:" << stream_id << " message: " <<
+      //       message
+      //                 << std::endl;
+      //       std::string response = "Dont give a shit";
+      //       t->Send(stream_id, response);
+      //     });
+    });
   } else {
   }
 
