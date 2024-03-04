@@ -16,7 +16,7 @@ public:
 
   static void Init(Napi::Env env, Napi::Object exports);
   static Napi::Object NewInstance(Napi::Env env, Napi::Value arg,
-                                  quit::QuailTransport *transport);
+                                  quail::QuailTransport *transport);
 
   QuailTransport(const Napi::CallbackInfo &info);
 
@@ -25,7 +25,7 @@ public:
 
   Napi::ThreadSafeFunction async_callback_safe_ = nullptr;
 
-  quit::QuailTransport *transport_;
+  quail::QuailTransport *transport_;
 };
 } // namespace addon
 

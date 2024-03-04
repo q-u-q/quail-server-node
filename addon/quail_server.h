@@ -11,7 +11,7 @@ namespace addon {
 class QuailServer : public Napi::ObjectWrap<QuailServer> {
 public:
   struct callback_data {
-    quit::QuailTransport *transport;
+    quail::QuailTransport *transport;
   };
 
   static void Init(Napi::Env env, Napi::Object exports);

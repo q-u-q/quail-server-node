@@ -26,7 +26,7 @@ void QuailTransport::Init(Napi::Env env, Napi::Object exports) {
 }
 
 Napi::Object QuailTransport::NewInstance(Napi::Env env, Napi::Value arg,
-                                         quit::QuailTransport *transport) {
+                                         quail::QuailTransport *transport) {
   Napi::EscapableHandleScope scope(env);
   Napi::Object obj = env.GetInstanceData<Napi::FunctionReference>()->New({arg});
 

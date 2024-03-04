@@ -49,7 +49,7 @@ Napi::Value QuailServer::Start(const Napi::CallbackInfo &info) {
       std::string cert_copy = std::move(cert);
       std::string key_copy = std::move(key);
 
-      server.signal_transport_.connect([this](quit::QuailTransport *t) {
+      server.On("/echo",[this](quail::QuailTransport *t) {
         // std::string data("foo");
         // sleep(1);
         // t->session_->SendOrQueueDatagram(data);
