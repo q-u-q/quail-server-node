@@ -12,7 +12,7 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 # message("WEBRTC_COMPONENT_PATH " ${WEBRTC_COMPONENT_PATH})
 # message("WEBRTC_PACKAGE_PATH " ${WEBRTC_PACKAGE_PATH})
 
-add_subdirectory(/root/quail-server quail-server)
+add_subdirectory(./deps/quail-server quail-server)
 
 # source files
 file(GLOB SOURCE_FILES "addon/*.cc" "addon/*.h")
