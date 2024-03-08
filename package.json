@@ -1,12 +1,12 @@
 {
   "name": "quail-server",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "compile": "cmake-js compile -D -p 16",
-    "postinstall": "npm run compile"
+    "postinstall": "bash ./scripts/deps.sh && npm run compile"
   },
   "keywords": [],
   "author": "",
