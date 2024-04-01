@@ -5,8 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "compile": "cmake-js compile -D -p 16",
-    "postinstall": "bash ./scripts/deps.sh && npm run compile"
+    "compile": "cmake-js compile -p 16",
+    "postinstall": "bash ./scripts/deps.sh && npm run compile",
+    "compile-debug": "cmake-js compile -D -p 16"
   },
   "keywords": [],
   "author": "",

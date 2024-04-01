@@ -1,4 +1,4 @@
-const { QuailServer: QuailServerInternal } = require('./build/Debug/quail-js')
+const { QuailServer: QuailServerInternal } = require('./build/Release/quail-js')
 
 class QuailServer {
   constructor() {
